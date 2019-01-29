@@ -16,12 +16,12 @@ interface DispatchProps {
 }
 
 interface StateProps {
-  pokemonState: PokemonState
+  state: PokemonState
 }
 
 type Props = StateProps & OwnProps & DispatchProps
 
-class PokemonList extends React.Component<Props, State> {
+export class PokemonList extends React.Component<Props, State> {
 
   constructor(prop:Props) {
     super(prop)
@@ -36,6 +36,7 @@ class PokemonList extends React.Component<Props, State> {
           <div className="col-6">
           <button className="btn btn-primary" onClick={() => this.props.pokemon()}>
               Get Pokemon List
+              {this.props.state.next}
             </button>
           </div>
         </div>
@@ -46,7 +47,7 @@ class PokemonList extends React.Component<Props, State> {
 
 const mapStateToProps = (states: RootState, ownProps: OwnProps): StateProps => {
   return {
-    pokemonState: states.pokeState.pReducer
+    state: states.pokeState.pState
   }
 }
 

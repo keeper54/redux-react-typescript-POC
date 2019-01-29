@@ -1,16 +1,18 @@
-import React, { Component, PureComponent } from 'react'
-import { Provider } from 'react-redux'
+import React, { Component } from 'react'
+import {Provider} from 'react-redux'
 import store from './store'
+import {PokemonList} from './pages/pokemonList'
+
+
 
 class App extends Component {
+
   render() {
     return (
       <Provider store={store}>
-        <div className="App">
-          <div id="route-container">
-              
-          </div>
-        </div>
+          <PokemonList>
+            {store.getState}
+          </PokemonList>>
       </Provider>
     );
   }
