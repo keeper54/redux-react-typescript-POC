@@ -1,19 +1,16 @@
 import React, { Component } from 'react'
-import {Provider} from 'react-redux'
-import store from './store'
-import {PokemonList} from './pages/pokemonList'
-
+import PokemonList from './pages/pokemonList'
+// import {RootState} from './store'
 
 
 class App extends Component {
 
   render() {
+    console.log(this)
     return (
-      <Provider store={store}>
-          <PokemonList>
-            {store.getState}
-          </PokemonList>>
-      </Provider>
+
+          <PokemonList>         
+          </PokemonList>
     );
   }
 }

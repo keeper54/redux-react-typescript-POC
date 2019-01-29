@@ -1,42 +1,50 @@
 import * as React from 'react'
-import { RootState } from '../store'
+import store from '../store'
 import { pokemon } from '../store/pokemon/pokemon.actions'
-import { PokemonState } from '../store/pokemon/pokemon.reducer'
+import { PokemonProps } from '../store/pokemon/pokemon.reducer'
 import { ThunkDispatch } from 'redux-thunk'
 import { connect } from 'react-redux'
 
 interface State {
+  
 }
 
 interface OwnProps {
 }
 
 interface DispatchProps {
-    pokemon: () => void
+  // getPokemon: string
 }
 
 interface StateProps {
-  state: PokemonState
+  // pokeStateProps: string
 }
 
 type Props = StateProps & OwnProps & DispatchProps
 
-export class PokemonList extends React.Component<Props, State> {
+
+
+class PokemonList extends React.Component<Props, State> {
 
   constructor(prop:Props) {
     super(prop)
-        this.state = {
-    }
   }
 
+  public componentDidMount = () => {
+    console.log('componentDidMount')
+    console.log("store: ", store)
+  }
+
+
   render() {
+    
+    console.log('right inside render')
     return (
       <div className="container">
         <div className="row justify-content-center mb-3">
           <div className="col-6">
-          <button className="btn btn-primary" onClick={() => this.props.pokemon()}>
+          <button className="btn btn-primary">
               Get Pokemon List
-              {this.props.state.next}
             </button>
           </div>
         </div>
@@ -45,19 +53,34 @@ export class PokemonList extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (states: RootState, ownProps: OwnProps): StateProps => {
+
+
+// const mapStateToProps = (states: RootState, stateProps: Props): State => {
+//   console.log('mapstatetoprops')
+//   return ({
+//     pokeStateProps: states.pokeState.pState
+//   })
+// }
+
+const mapStateToProps = (state:any) => {
+  console.log("mapStateToProps state: ", state)
   return {
-    state: states.pokeState.pState
+    pokeStateProps: state,
+    pmState: {}
   }
 }
 
+/*
+// separate them from each other to prevent prop conflicts.
+const mapStateToProps = ({ heroes }: ApplicationState) => ({
+  loading: heroes.loading,
+  errors: heroes.errors,
+  data: heroes.data
+})*/
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>, ownProps: OwnProps): DispatchProps => {
   return {
-    pokemon: async () => {
-        await dispatch(pokemon())
-        console.log('mapDispatchToProps Done')
-    }
+    getPokemon: "hello"
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PokemonList)
+export default connect(mapStateToProps)(PokemonList)
