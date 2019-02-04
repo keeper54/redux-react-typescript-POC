@@ -1,16 +1,25 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import pState, { State as PokemonState } from './pokemon/pokemon.reducer'
-import thunk from 'redux-thunk'
+import { createStore, combineReducers, applyMiddleware,Reducer } from 'redux'
+import pokemonReducer from './pokemon/pokemon.reducer'
+import thunkMiddleware  from 'redux-thunk'
 
-// export interface RootState {
-//   pokeState: PokemonState
-// }
-// console.log("pState: ", pState)
-
-var rootReducer = () => {
-  console.log('combine reducers')
-  combineReducers<PokemonState>({
-    pState
-  })
+export type StoreState = {
+  pokemonLister:any
 }
-export default createStore(rootReducer, applyMiddleware(thunk))
+
+export type PokemonListItem = {
+  name: string;
+  url: string;
+}
+
+export type PokemonList = {
+  pokemonListItem?: PokemonListItem[]
+  count?: number
+  previous?: string
+  next?: string
+  error?: string
+}
+
+
+export default createStore(combineReducers<StoreState>({
+  pokemonLister: pokemonReducer
+}), applyMiddleware(thunkMiddleware ))

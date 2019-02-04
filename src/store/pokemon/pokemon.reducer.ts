@@ -1,41 +1,24 @@
 // store/session/reducers.ts
-import { combineReducers } from 'redux'
-import { Action } from './pokemon.actions'
-import { PokemonListItem } from '../../classes/Pokemon';
-import  PokemonList  from '../../pages/pokemonList';
+import {AnyAction, Store} from 'redux'
+import { LoadPokemonListAction, Action } from './pokemon.actions'
+import {StoreState, PokemonList} from '../index'
 
-// States' definition
-export interface PokemonProps {  //info available to store
-    pokeList?: PokemonListItem[] 
-    count?:number
-    next?: string
-    previous?: string;
-    error?: string;
+const initialState:StoreState = {
+    pokemonLister: []
 }
 
-export const defaultState:PokemonProps = {
-    count: 1, 
-    next: "next", 
-    previous: "previous"
-}
-
-export interface State {
-    myState: PokemonProps
-}
-
-
-
-const pState = (state: PokemonProps = defaultState, action: Action): PokemonProps => {
-    console.log('inside const pState');
-    
+const pokemonReducer = (state: StoreState = initialState, action: Action): StoreState => {
     switch (action.type) {
-        case 'GET_POKEMON_LIST':
-            console.log('GET_POKEMON_LIST reducer')
-            console.log(state)
-            return { ...state }
+        case 'LOAD_POKEMON_LIST':
+            console.log('myState: action.payload value: ', action.payload)
+            return { 
+                ...state,
+                pokemonLister: action.payload
+            }
         default:
             console.log('default return: ', state)
-            return  state 
+            return  state = state
     }
 }
-export default pState
+
+export default pokemonReducer

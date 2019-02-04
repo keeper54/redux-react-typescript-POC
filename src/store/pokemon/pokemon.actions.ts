@@ -1,30 +1,36 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import { AnyAction } from 'redux'
+import { AnyAction, Action } from 'redux'
+import { StoreState, PokemonList } from '../index';
+
+import axios from 'axios'
 
 // Action Definition
-export interface GetPokemonListAction {
-  type: 'GET_POKEMON_LIST'
+export interface LoadPokemonListAction extends Action {
+  type: 'LOAD_POKEMON_LIST'
+  payload: any
 }
 
 // Union Action Types
-export type Action = GetPokemonListAction
-
+export type Action = LoadPokemonListAction
+ 
 // Action Creators
-export const getPokemonListActionCreator = (): GetPokemonListAction => {
-  console.log('inside getPokemonListActionCreator')
-  return { type: 'GET_POKEMON_LIST' }
+export const getPokemonListActionCreator = (pokeProps:any): LoadPokemonListAction => {
+  return { 
+    type: 'LOAD_POKEMON_LIST',
+    payload: pokeProps
+  }
 }
 
 // thunk action
-export const pokemon = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
-  console.log('const pokemon from /actions')
+export const pokemonGetList = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   // Invoke API
-  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    return new Promise<void>((resolve) => {
-      console.log('before dispatching getPokemonListActionCreator')
-      dispatch(getPokemonListActionCreator)
-      
-
+    return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+      return new Promise<void>((resolve) => {
+        axios
+      .get('https://pokeapi.co/api/v2/pokemon')
+      .then( (returnedList) => {
+        dispatch(getPokemonListActionCreator(returnedList))
+      })
     })
   }
 }

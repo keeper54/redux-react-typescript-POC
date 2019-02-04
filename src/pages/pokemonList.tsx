@@ -1,7 +1,6 @@
 import * as React from 'react'
-import store from '../store'
-import { pokemon } from '../store/pokemon/pokemon.actions'
-import { PokemonProps } from '../store/pokemon/pokemon.reducer'
+import store, { StoreState } from '../store'
+import { pokemonGetList } from '../store/pokemon/pokemon.actions'
 import { ThunkDispatch } from 'redux-thunk'
 import { connect } from 'react-redux'
 
@@ -13,11 +12,11 @@ interface OwnProps {
 }
 
 interface DispatchProps {
-  // getPokemon: string
+  getPokemon: () => void
 }
 
 interface StateProps {
-  // pokeStateProps: string
+  pokemonLister: StoreState
 }
 
 type Props = StateProps & OwnProps & DispatchProps
@@ -31,19 +30,17 @@ class PokemonList extends React.Component<Props, State> {
   }
 
   public componentDidMount = () => {
-    console.log('componentDidMount')
-    console.log("store: ", store)
+    console.log("componentDidMount store: ", store)
   }
 
 
   render() {
     
-    console.log('right inside render')
     return (
       <div className="container">
         <div className="row justify-content-center mb-3">
           <div className="col-6">
-          <button className="btn btn-primary">
+          <button className="btn btn-primary"  onClick={() => {this.props.getPokemon()}}>
               Get Pokemon List
             </button>
           </div>
@@ -55,32 +52,19 @@ class PokemonList extends React.Component<Props, State> {
 
 
 
-// const mapStateToProps = (states: RootState, stateProps: Props): State => {
-//   console.log('mapstatetoprops')
-//   return ({
-//     pokeStateProps: states.pokeState.pState
-//   })
-// }
-
-const mapStateToProps = (state:any) => {
-  console.log("mapStateToProps state: ", state)
+const mapStateToProps = (state:StoreState) => {
   return {
-    pokeStateProps: state,
-    pmState: {}
+    pokemonLister: state.pokemonLister
   }
 }
 
-/*
-// separate them from each other to prevent prop conflicts.
-const mapStateToProps = ({ heroes }: ApplicationState) => ({
-  loading: heroes.loading,
-  errors: heroes.errors,
-  data: heroes.data
-})*/
+
 const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>, ownProps: OwnProps): DispatchProps => {
   return {
-    getPokemon: "hello"
+    getPokemon: async () => {
+      await dispatch(pokemonGetList())
+    }
   }
 }
 
-export default connect(mapStateToProps)(PokemonList)
+export default connect(mapStateToProps, mapDispatchToProps)(PokemonList)

@@ -6,9 +6,8 @@ import PokemonList from './pages/pokemonList'
 class App extends Component {
 
   render() {
-    console.log(this)
+    console.log('this in App component: ', this)
     return (
-
           <PokemonList>         
           </PokemonList>
     );
